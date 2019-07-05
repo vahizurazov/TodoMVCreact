@@ -1,9 +1,13 @@
 import React from "react";
+import Counter from './Counter'
 
 function TodoFooter(props) {
+  if (!props.itemList.length) {
+    return null;
+  }
   return (
     <footer className="footer">
-      <span className="todo-count" />
+      <Counter itemList={props.itemList} />
       <ul className="filters">
         <li>
           <a href="#/" className="selected">

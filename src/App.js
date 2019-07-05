@@ -91,6 +91,7 @@ class App extends React.Component {
           isAllChecked={this.state.isAllChecked}
         />
         <TodoFooter
+        itemList={this.state.itemsList}
         />
       </section>
     );

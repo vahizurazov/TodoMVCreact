@@ -1,11 +1,11 @@
-import React from "react";
-import Counter from './Counter'
-import ClearComleted from './ClearComleted'
+import React from 'react';
+import Counter from './Counter';
+import ClearComleted from './ClearComleted';
 
 function TodoFooter(props) {
-  // let item =props.itemList 
+  let item = props.itemList;
   // console.log(props.handleClick,'item');
-  
+
   if (!props.itemList.length) {
     return null;
   }
@@ -14,20 +14,34 @@ function TodoFooter(props) {
       <Counter itemList={props.itemList} />
       <ul className="filters">
         <li>
-          <a href="#/" className= "selected"  onClick={ e => props.handleClick(e.target.hash)}>
+          <a
+            href="#/"
+            className={props.view === 'all' ? 'selected' : ''}
+            onClick={props.handleClick}
+          >
             All
           </a>
         </li>
         <li>
-          <a href="#/active"  onClick={ e => props.handleClick(e.target.hash)}>Active</a>
+          <a
+            href="#/active"
+            className={props.view === 'active' ? 'selected' : ''}
+            onClick={props.handleClick}
+          >
+            Active
+          </a>
         </li>
         <li>
-          <a href="#/completed" onClick={ e => props.handleClick(e.target.hash)}>Completed</a>
+          <a
+            href="#/completed"
+            className={props.view === 'completed' ? 'selected' : ''}
+            onClick={props.handleClick}
+          >
+            Completed
+          </a>
         </li>
       </ul>
-      <ClearComleted
-        clearCompleted={props.clearCompleted}
-      />
+      <ClearComleted clearCompleted={props.clearCompleted} />
     </footer>
   );
 }

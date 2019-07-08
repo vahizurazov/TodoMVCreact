@@ -1,13 +1,14 @@
-import React from "react";
-import TodoList from "./components/Todolist";
-import TodoFooter from "./components/TodoFooter";
+import React from 'react';
+import TodoList from './components/Todolist';
+import TodoFooter from './components/TodoFooter';
 
 class App extends React.Component {
   state = {
     itemsList: [],
     visibleItems: [],
-    view: "all",
+    view: 'all',
     editing: null,
+    tempValue: '',
     isAllChecked: () => {
       if (
         this.state.itemsList.filter(el => el.checked).length ===
@@ -15,24 +16,31 @@ class App extends React.Component {
       ) {
         return true;
       } else return false;
-    }
+    },
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.itemsList !== this.state.itemsList) {
+      this.updateViewList();
+    }
+  }
   handleSubmit = e => {
     let inputValue = e.target.value.trim();
-    if (e.keyCode !== 13 || inputValue === "") return;
+    if (e.keyCode !== 13 || inputValue === '') return;
     this.setState(prevState => ({
       itemsList: prevState.itemsList.concat({
         label: inputValue,
         checked: false,
-        id: Math.floor(+new Date() + Math.random() * 0xffffffff).toString(36)
-      })
+        id: Math.floor(+new Date() + Math.random() * 0xffffffff).toString(36),
+      }),
     }));
-    e.target.value = "";
+    e.target.value = '';
+    this.updateViewList();
   };
 
   deleteItem = id => {
     this.setState(prevState => ({
-      itemsList: prevState.itemsList.filter((el, l) => l !== id.i)
+      itemsList: prevState.itemsList.filter((el, l) => l !== id.i),
     }));
   };
 
@@ -43,11 +51,10 @@ class App extends React.Component {
           el.checked = !el.checked;
         }
         return el;
-      })
+      }),
     }));
+    this.updateViewList();
   };
-
-
 
   selectAll = () => {
     if (this.state.isAllChecked()) {
@@ -55,14 +62,14 @@ class App extends React.Component {
         itemsList: prevState.itemsList.map(el => {
           el.checked = false;
           return el;
-        })
+        }),
       }));
     } else {
       this.setState(prevState => ({
         itemsList: prevState.itemsList.map(el => {
           el.checked = true;
           return el;
-        })
+        }),
       }));
     }
   };
@@ -70,32 +77,58 @@ class App extends React.Component {
   clearCompleted = () => {
     this.setState(prevState => ({
       itemsList: prevState.itemsList.filter(el => !el.checked),
-      visibleItems: []
+      visibleItems: [],
     }));
   };
+  updateViewList = () => {
+    switch (this.state.view) {
+      case 'active':
+        this.setState({
+          visibleItems: this.state.itemsList.filter(el => !el.checked),
+        });
+        break;
+      case 'completed':
+        this.setState({
+          visibleItems: this.state.itemsList.filter(el => el.checked),
+        });
+        break;
+      default:
+        this.setState({
+          visibleItems: this.state.itemsList,
+        });
+    }
+  };
 
-
-  handleClick = hash => {
-    switch (hash) {
-      case "#/active":
-        this.setState(prevState =>({
-          view: "active",
+  handleClick = e => {
+    switch (e.target.hash) {
+      case '#/active':
+        this.setState(prevState => ({
+          view: 'active',
           visibleItems: prevState.itemsList.filter(el => !el.checked),
         }));
         break;
-      case "#/completed":
-        this.setState(prevState =>({
-          view: "completed",
+      case '#/completed':
+        this.setState(prevState => ({
+          view: 'completed',
           visibleItems: prevState.itemsList.filter(el => el.checked),
         }));
         break;
       default:
-        this.setState(prevState =>({
-          view: "all",
-          visibleItems: prevState.itemsList, 
+        this.setState(prevState => ({
+          view: 'all',
+          visibleItems: prevState.itemsList,
         }));
     }
   };
+
+  handleChange = id => () => {
+    this.setState({ editing: id });
+  };
+  handleChangeVal = (e) => {
+    this.setState({ tempValue: e.target.value });
+    
+  }
+
   render() {
     // console.log(this.state, "this.state");
 
@@ -118,12 +151,16 @@ class App extends React.Component {
           selectAll={this.selectAll}
           isAllChecked={this.state.isAllChecked}
           view={this.state.view}
-          visibleItems ={this.state.visibleItems}
+          visibleItems={this.state.visibleItems}
+          handleChange={this.handleChange}
+          editing={this.state.editing}
+          handleChangeVal={this.handleChangeVal}
         />
         <TodoFooter
           itemList={this.state.itemsList}
           clearCompleted={this.clearCompleted}
           handleClick={this.handleClick}
+          view={this.state.view}
         />
       </section>
     );

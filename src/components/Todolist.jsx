@@ -1,9 +1,9 @@
-import React from "react";
-import SelectAll from "./SelectAll";
+import React from 'react';
+import SelectAll from './SelectAll';
 
 function TodoList(props) {
   let item = props.itemList;
-  let visibleItems = props.visibleItems
+  let visibleItems = props.visibleItems;
   let view = props.view;
   let nowShow;
   view === 'all' ? (nowShow = item) : (nowShow = visibleItems);
@@ -17,8 +17,13 @@ function TodoList(props) {
       />
       <ul className="todo-list">
         {nowShow.map((item, i) => {
+          const classNameEditing = props.editing === item.id ? 'editing' : '';
+          const classNameChecked = item.checked ? 'completed' : '';
           return (
-            <li key={item.id} className={item.checked ? "completed" : ""}>
+            <li
+              key={item.id}
+              className={`${classNameChecked} ${classNameEditing}`}
+            >
               <div className="view">
                 <input
                   className="toggle"
@@ -27,20 +32,22 @@ function TodoList(props) {
                   checked={item.checked}
                   onChange={() => props.checked(item.id)}
                 />
-                <label htmlFor={i} >{item.label}</label>
+                <label htmlFor={i} onDoubleClick={props.handleChange(item.id)}>
+                  {item.label}
+                </label>
                 <button
                   onClick={() => props.deleted({ i })}
                   className="destroy"
                 />
-                <input
-                  // ref="editField"
-                  className="edit"
-                  // value={null}
-                  // onBlur={this.handleSubmit}
-                  // onChange={props.handleChange}
-                  // onKeyDown={this.handleKeyDown}
-                />
               </div>
+              <input
+                // ref="editField"
+                className="edit"
+                value={item.label}
+                // onBlur={this.handleSubmit}
+                onChange={props.handleChangeVal}
+                // onKeyDown={this.handleKeyDown}
+              />
             </li>
           );
         })}

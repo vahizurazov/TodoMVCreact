@@ -63,13 +63,17 @@ class App extends React.Component {
       }));
     }
   };
+//------------------------------------------
+  clearCompleted = () => {    
+    this.setState(prevState => ({
+      itemsList: prevState.itemsList.filter(el => !el.checked),
+      visibleItems: []
+    }));
+  };
 
-  componentDidMount(){
-    this.setState()
-  }
-
+//---------------------------------------
   render() {
-    // console.log('this.state', this.state.itemsList);
+    // console.log(this.state, 'this.state');
     
     return (
       <section className="todoapp">
@@ -92,6 +96,9 @@ class App extends React.Component {
         />
         <TodoFooter
         itemList={this.state.itemsList}
+        clearCompleted={this.clearCompleted}
+          onlyCompleted={this.onlyCompleted}
+          allTasks={this.allTasks}
         />
       </section>
     );

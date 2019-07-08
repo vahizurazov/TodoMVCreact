@@ -1,7 +1,10 @@
 import React from "react";
 import Counter from './Counter'
+import ClearComleted from './ClearComleted'
 
 function TodoFooter(props) {
+  // console.log(props.clearCompleted,'props.clearCompleted');
+  
   if (!props.itemList.length) {
     return null;
   }
@@ -17,11 +20,11 @@ function TodoFooter(props) {
         <li>
           <a href="#/active">Active</a>
         </li>
-        <li>
-          <a href="#/completed">Completed</a>
-        </li>
+        
       </ul>
-      <button className="clear-completed">Clear completed</button>
+      <ClearComleted
+        clearCompleted={props.clearCompleted}
+      />
     </footer>
   );
 }

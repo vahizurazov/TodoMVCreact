@@ -7,6 +7,7 @@ class App extends React.Component {
     itemsList: [],
     visibleItems: [],
     view: "all",
+    editing: null,
     isAllChecked: () => {
       if (
         this.state.itemsList.filter(el => el.checked).length ===
@@ -46,6 +47,8 @@ class App extends React.Component {
     }));
   };
 
+
+
   selectAll = () => {
     if (this.state.isAllChecked()) {
       this.setState(prevState => ({
@@ -63,18 +66,39 @@ class App extends React.Component {
       }));
     }
   };
-//------------------------------------------
-  clearCompleted = () => {    
+  //------------------------------------------
+  clearCompleted = () => {
     this.setState(prevState => ({
       itemsList: prevState.itemsList.filter(el => !el.checked),
       visibleItems: []
     }));
   };
 
-//---------------------------------------
+
+  handleClick = hash => {
+    switch (hash) {
+      case "#/active":
+        this.setState(prevState =>({
+          view: "active",
+          visibleItems: prevState.itemsList.filter(el => !el.checked),
+        }));
+        break;
+      case "#/completed":
+        this.setState(prevState =>({
+          view: "completed",
+          visibleItems: prevState.itemsList.filter(el => el.checked),
+        }));
+        break;
+      default:
+        this.setState(prevState =>({
+          view: "all",
+          visibleItems: prevState.itemsList, 
+        }));
+    }
+  };
   render() {
-    // console.log(this.state, 'this.state');
-    
+    // console.log(this.state, "this.state");
+
     return (
       <section className="todoapp">
         <header className="header">
@@ -93,12 +117,13 @@ class App extends React.Component {
           checked={this.checkItem}
           selectAll={this.selectAll}
           isAllChecked={this.state.isAllChecked}
+          view={this.state.view}
+          visibleItems ={this.state.visibleItems}
         />
         <TodoFooter
-        itemList={this.state.itemsList}
-        clearCompleted={this.clearCompleted}
-          onlyCompleted={this.onlyCompleted}
-          allTasks={this.allTasks}
+          itemList={this.state.itemsList}
+          clearCompleted={this.clearCompleted}
+          handleClick={this.handleClick}
         />
       </section>
     );

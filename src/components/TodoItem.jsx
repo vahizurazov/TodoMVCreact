@@ -17,9 +17,7 @@ export default class TodoItem extends Component {
   handleSave = (id, text) => {
     if (text.length === 0) {
       this.props.newTodo.deleted(id);
-      console.log("this.props", id);
     } else {
-      console.log("{EQYZ");
       this.props.newTodo.editTodo(id, text);
     }
     this.setState({ editing: false });
@@ -27,10 +25,6 @@ export default class TodoItem extends Component {
 
   render() {
     const { todo, newTodo } = this.props;
-    // console.log('TODO2', todo);
-    // console.log('this.props', this.props);
-    // console.log('newTodo',newTodo);
-
     let element;
     if (this.state.editing) {
       element = (

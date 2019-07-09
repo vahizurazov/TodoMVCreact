@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
-import TodoList from './components/Todolist';
-import TodoFooter from './components/TodoFooter';
+import React, { Component } from "react";
+import TodoList from "./components/Todolist";
+import TodoFooter from "./components/TodoFooter";
 
 class App extends Component {
-
   constructor(...props) {
     super(...props);
 
     this.state = {
       itemsList: [],
       visibleItems: [],
-      view: 'all',
+      view: "all",
       editing: null,
-      tempValue: '',
+      tempValue: "",
       isAllChecked: () => {
         if (
           this.state.itemsList.filter(el => el.checked).length ===
@@ -20,12 +19,10 @@ class App extends Component {
         ) {
           return true;
         } else return false;
-      },
+      }
     };
 
-
     this.changeFilterState = this._changeFilterState.bind(this);
-
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -35,39 +32,34 @@ class App extends Component {
   }
   handleSubmit = e => {
     let inputValue = e.target.value.trim();
-    if (e.keyCode !== 13 || inputValue === '') return;
+    if (e.keyCode !== 13 || inputValue === "") return;
     this.setState(prevState => ({
       itemsList: prevState.itemsList.concat({
         label: inputValue,
         checked: false,
-        id: Math.floor(+new Date() + Math.random() * 0xffffffff).toString(36),
-      }),
+        id: Math.floor(+new Date() + Math.random() * 0xffffffff).toString(36)
+      })
     }));
-    e.target.value = '';
+    e.target.value = "";
     this.updateViewList();
   };
 
   deleteItem = id => {
-    console.log('testdeleted');
-    
     this.setState(prevState => ({
-      itemsList: prevState.itemsList.filter(item => item.id !== id),
+      itemsList: prevState.itemsList.filter(item => item.id !== id)
     }));
   };
 
-  editTodo = (id,text) => {
-    console.log('ID',id);
-    console.log('TEXT',text);
+  editTodo = (id, text) => {
     this.setState(prevState => ({
       itemsList: prevState.itemsList.map(el => {
-        if(id === el.id){
-          el.label = text
+        if (id === el.id) {
+          el.label = text;
         }
-        return el
+        return el;
       })
     }));
   };
-
 
   checkItem = id => {
     this.setState(prevState => ({
@@ -76,7 +68,7 @@ class App extends Component {
           el.checked = !el.checked;
         }
         return el;
-      }),
+      })
     }));
     this.updateViewList();
   };
@@ -87,61 +79,61 @@ class App extends Component {
         itemsList: prevState.itemsList.map(el => {
           el.checked = false;
           return el;
-        }),
+        })
       }));
     } else {
       this.setState(prevState => ({
         itemsList: prevState.itemsList.map(el => {
           el.checked = true;
           return el;
-        }),
+        })
       }));
     }
   };
-  //------------------------------------------
+
   clearCompleted = () => {
     this.setState(prevState => ({
       itemsList: prevState.itemsList.filter(el => !el.checked),
-      visibleItems: [],
+      visibleItems: []
     }));
   };
   updateViewList = () => {
     switch (this.state.view) {
-      case 'active':
+      case "active":
         this.setState({
-          visibleItems: this.state.itemsList.filter(el => !el.checked),
+          visibleItems: this.state.itemsList.filter(el => !el.checked)
         });
         break;
-      case 'completed':
+      case "completed":
         this.setState({
-          visibleItems: this.state.itemsList.filter(el => el.checked),
+          visibleItems: this.state.itemsList.filter(el => el.checked)
         });
         break;
       default:
         this.setState({
-          visibleItems: this.state.itemsList,
+          visibleItems: this.state.itemsList
         });
     }
   };
 
   _changeFilterState = e => {
     switch (e.target.hash) {
-      case '#/active':
+      case "#/active":
         this.setState(prevState => ({
-          view: 'active',
-          visibleItems: prevState.itemsList.filter(el => !el.checked),
+          view: "active",
+          visibleItems: prevState.itemsList.filter(el => !el.checked)
         }));
         break;
-      case '#/completed':
+      case "#/completed":
         this.setState(prevState => ({
-          view: 'completed',
-          visibleItems: prevState.itemsList.filter(el => el.checked),
+          view: "completed",
+          visibleItems: prevState.itemsList.filter(el => el.checked)
         }));
         break;
       default:
         this.setState(prevState => ({
-          view: 'all',
-          visibleItems: prevState.itemsList,
+          view: "all",
+          visibleItems: prevState.itemsList
         }));
     }
   };
@@ -149,14 +141,11 @@ class App extends Component {
   handleChange = id => () => {
     this.setState({ editing: id });
   };
-  handleChangeVal = (e) => {
+  handleChangeVal = e => {
     this.setState({ tempValue: e.target.value });
-    
-  }
+  };
 
   render() {
-    // console.log(this.state, "this.state");
-
     return (
       <section className="todoapp">
         <header className="header">

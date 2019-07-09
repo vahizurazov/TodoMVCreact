@@ -9,9 +9,8 @@ class TodoList extends Component {
 
   render() {
     const { visibleItems, itemList } = this.props;
-    const todosCount = itemList.length
-    // console.log('!!todosCount',!!todosCount);
-    
+    const todosCount = itemList.length;
+
     return (
       <section className="main">
         {!!todosCount && (
@@ -28,7 +27,6 @@ class TodoList extends Component {
         )}
         <ul className="todo-list">
           {visibleItems.map(todo => (
-            // console.log('todo', todo)
             <TodoItem key={todo.id} todo={todo} newTodo={this.props} />
           ))}
         </ul>

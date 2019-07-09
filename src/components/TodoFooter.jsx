@@ -3,12 +3,15 @@ import Counter from './Counter';
 import ClearComleted from './ClearComleted';
 
 function TodoFooter(props) {
-  let item = props.itemList;
+  // let item = props.itemList;
   // console.log(props.handleClick,'item');
 
   if (!props.itemList.length) {
     return null;
   }
+  const showButton = props.itemList.some(el => el.checked)
+  console.log(showButton,'showButton');
+  
   return (
     <footer className="footer">
       <Counter itemList={props.itemList} />
@@ -17,7 +20,7 @@ function TodoFooter(props) {
           <a
             href="#/"
             className={props.view === 'all' ? 'selected' : ''}
-            onClick={props.handleClick}
+            onClick={props.onFilterStateChange}
           >
             All
           </a>
@@ -26,7 +29,7 @@ function TodoFooter(props) {
           <a
             href="#/active"
             className={props.view === 'active' ? 'selected' : ''}
-            onClick={props.handleClick}
+            onClick={props.onFilterStateChange}
           >
             Active
           </a>
@@ -35,13 +38,15 @@ function TodoFooter(props) {
           <a
             href="#/completed"
             className={props.view === 'completed' ? 'selected' : ''}
-            onClick={props.handleClick}
+            onClick={props.onFilterStateChange}
           >
             Completed
           </a>
         </li>
       </ul>
-      <ClearComleted clearCompleted={props.clearCompleted} />
+      {!!showButton && (
+        <ClearComleted clearCompleted={props.clearCompleted} />
+      )}
     </footer>
   );
 }

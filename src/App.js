@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { Component } from 'react';
 import TodoList from './components/Todolist';
 import TodoFooter from './components/TodoFooter';
 
-class App extends React.Component {
-  state = {
-    itemsList: [],
-    visibleItems: [],
-    view: 'all',
-    editing: null,
-    tempValue: '',
-    isAllChecked: () => {
-      if (
-        this.state.itemsList.filter(el => el.checked).length ===
-        this.state.itemsList.length
-      ) {
-        return true;
-      } else return false;
-    },
-  };
+class App extends Component {
+
+  constructor(...props) {
+    super(...props);
+
+    this.state = {
+      itemsList: [],
+      visibleItems: [],
+      view: 'all',
+      editing: null,
+      tempValue: '',
+      isAllChecked: () => {
+        if (
+          this.state.itemsList.filter(el => el.checked).length ===
+          this.state.itemsList.length
+        ) {
+          return true;
+        } else return false;
+      },
+    };
+
+
+    this.changeFilterState = this._changeFilterState.bind(this);
+
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.itemsList !== this.state.itemsList) {
@@ -39,10 +48,26 @@ class App extends React.Component {
   };
 
   deleteItem = id => {
+    console.log('testdeleted');
+    
     this.setState(prevState => ({
-      itemsList: prevState.itemsList.filter((el, l) => l !== id.i),
+      itemsList: prevState.itemsList.filter(item => item.id !== id),
     }));
   };
+
+  editTodo = (id,text) => {
+    console.log('ID',id);
+    console.log('TEXT',text);
+    this.setState(prevState => ({
+      itemsList: prevState.itemsList.map(el => {
+        if(id === el.id){
+          el.label = text
+        }
+        return el
+      })
+    }));
+  };
+
 
   checkItem = id => {
     this.setState(prevState => ({
@@ -99,7 +124,7 @@ class App extends React.Component {
     }
   };
 
-  handleClick = e => {
+  _changeFilterState = e => {
     switch (e.target.hash) {
       case '#/active':
         this.setState(prevState => ({
@@ -147,6 +172,7 @@ class App extends React.Component {
         <TodoList
           itemList={this.state.itemsList}
           deleted={this.deleteItem}
+          editTodo={this.editTodo}
           checked={this.checkItem}
           selectAll={this.selectAll}
           isAllChecked={this.state.isAllChecked}
@@ -159,7 +185,7 @@ class App extends React.Component {
         <TodoFooter
           itemList={this.state.itemsList}
           clearCompleted={this.clearCompleted}
-          handleClick={this.handleClick}
+          onFilterStateChange={this.changeFilterState}
           view={this.state.view}
         />
       </section>

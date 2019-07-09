@@ -22,6 +22,7 @@ export default class TodoItem extends Component {
     }
     this.setState({ editing: false });
   };
+  
 
   render() {
     const { todo, newTodo } = this.props;

@@ -6,18 +6,13 @@ import TodoHeader from "./components/TodoHeader";
 class App extends Component {
   constructor(...props) {
     super(...props);
+
+    const initialItems = this.restoreState() || [];
     this.state = {
-      itemsList: [],
-      visibleItems: [],
-      view: "all",
-      isAllChecked: () => {
-        if (
-          this.state.itemsList.filter(el => el.checked).length ===
-          this.state.itemsList.length
-        ) {
-          return true;
-        } else return false;
-      }
+      itemsList: initialItems,
+      visibleItems: initialItems,
+      view: "all"
+      
     };
 
     this.changeFilterState = this._changeFilterState.bind(this);
@@ -34,6 +29,13 @@ class App extends Component {
       itemsList: this.restoreState() || []
     });
   }
+
+  isAllChecked = () => {
+    const checkedState = this.state.itemsList.length;
+    const filterCheck = this.state.itemsList.filter(el => el.checked).length;
+    
+    return filterCheck === checkedState ? true : false;
+  };
 
   saveState = () => {
     try {
@@ -92,7 +94,7 @@ class App extends Component {
   };
 
   selectAll = () => {
-    if (this.state.isAllChecked()) {
+    if (this.isAllChecked()) {
       this.setState(prevState => ({
         itemsList: prevState.itemsList.map(el => {
           el.checked = false;
@@ -166,7 +168,7 @@ class App extends Component {
           editTodo={this.editTodo}
           checked={this.checkItem}
           selectAll={this.selectAll}
-          isAllChecked={this.state.isAllChecked}
+          isAllChecked={this.isAllChecked}
           view={this.state.view}
           visibleItems={this.state.visibleItems}
         />

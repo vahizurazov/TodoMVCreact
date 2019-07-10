@@ -7,6 +7,7 @@ class TodoHeader extends Component{
     }
 
     handleSubmit = e => {
+
         let inputValue = e.target.value.trim();
         if (e.keyCode !== 13 || inputValue === '') return;
         this.props.addItem(inputValue)
@@ -14,6 +15,7 @@ class TodoHeader extends Component{
       };
 
     render(){
+      
         return(
             <header className="header">
             <h1>Todos</h1>

@@ -8,7 +8,7 @@ class TodoList extends Component {
   }
 
   render() {
-    const { itemList, visibleItems, selectAll,deleted,editTodo,checked } = this.props;
+    const { itemList, visibleItems, selectAll,deleted,editTodo,checked,isAllChecked } = this.props;
     const todosCount = itemList.length;
 
     return (
@@ -19,7 +19,7 @@ class TodoList extends Component {
               id="toggle-all"
               className="toggle-all"
               type="checkbox"
-              checked={this.props.isAllChecked()}
+              checked={isAllChecked()}
               onChange={selectAll}
             />
             <label htmlFor="toggle-all">Mark all as complete</label>

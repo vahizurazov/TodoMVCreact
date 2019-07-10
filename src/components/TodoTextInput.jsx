@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classnames from "classnames";
 
-export default class TodoTextInput extends Component {
+ class TodoTextInput extends Component {
   state = {
     text: this.props.text || ""
   };
@@ -10,7 +10,7 @@ export default class TodoTextInput extends Component {
     const text = e.target.value.trim();
     if (e.which === 13) {
       this.props.onSave(text);
-      if (this.props.editing) {
+      if (this.props.isEditing) {
         this.setState({ text: "" });
       }
     }
@@ -21,7 +21,7 @@ export default class TodoTextInput extends Component {
   };
 
   handleBlur = e => {
-    if (this.props.editing) {
+    if (this.props.isEditing) {
       this.props.onSave(e.target.value);
     }
   };
@@ -30,7 +30,7 @@ export default class TodoTextInput extends Component {
     return (
       <input
         className={classnames({
-          edit: this.props.editing
+          edit: this.props.isEditing
         })}
         type="text"
         autoFocus={true}
@@ -42,3 +42,5 @@ export default class TodoTextInput extends Component {
     );
   }
 }
+
+export default TodoTextInput

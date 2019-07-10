@@ -1,8 +1,7 @@
 import React from "react";
 
 function Counter(props) {
-  const plural = props.itemList.length === 1 ? "item" : "items";
-  let uncheckItem = props => {
+  const uncheckItem = props => {
     let x = 0;
     props.itemList.forEach(el => {
       if (!el.checked) {
@@ -14,7 +13,7 @@ function Counter(props) {
   return (
     <span className="todo-count">
       {" "}
-      {uncheckItem(props)} {plural} left
+      {uncheckItem(props)} {uncheckItem(props) === 1 ? "item" : "items"} left
     </span>
   );
 }

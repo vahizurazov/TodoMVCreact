@@ -8,7 +8,7 @@ class TodoList extends Component {
   }
 
   render() {
-    const { visibleItems, itemList } = this.props;
+    const { itemList, visibleItems, selectAll,deleted,editTodo,checked } = this.props;
     const todosCount = itemList.length;
 
     return (
@@ -20,14 +20,14 @@ class TodoList extends Component {
               className="toggle-all"
               type="checkbox"
               checked={this.props.isAllChecked()}
-              onChange={this.props.selectAll}
+              onChange={selectAll}
             />
             <label htmlFor="toggle-all">Mark all as complete</label>
           </span>
         )}
         <ul className="todo-list">
           {visibleItems.map(todo => (
-            <TodoItem key={todo.id} todo={todo} newTodo={this.props} />
+            <TodoItem key={todo.id} todo={todo}  deleted = {deleted} editTodo = {editTodo} checked={checked} />
           ))}
         </ul>
       </section>

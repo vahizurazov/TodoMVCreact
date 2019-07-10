@@ -34,7 +34,7 @@ import classnames from "classnames";
         })}
         type="text"
         autoFocus={true}
-        value={this.state.text}
+        value={this.state.text} 
         onBlur={this.handleBlur}
         onChange={this.handleChange}
         onKeyDown={this.handleSubmit}
